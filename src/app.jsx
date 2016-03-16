@@ -1,11 +1,10 @@
-// NOTE: Set JavaScript Preprocessor to Babel
-// Add the following external JavaScript links:
-// https://fb.me/react-0.14.7.min.js
-// https://fb.me/react-dom-0.14.7.min.js
-
+// NOTE: Set JavaScript Preprocessor to Babel and add the 2 external scritps
 import './app.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+// -----------COPY CODE BELOW THIS LINE ONLY-------------\\
+// ------------------------------------------------------\\
 
 class App extends React.Component {
     render() {
