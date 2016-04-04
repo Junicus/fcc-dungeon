@@ -29,13 +29,14 @@ class DungeonEditor {
   }
 
   createNewFloor() {
-    var floor = [];
-    for(var row = 0; row < this.height; row++ ) {
+    let floor = [];
+    for (let row = 0; row < this.height; row++) {
       floor.push([]);
-      for(var col = 0; col < this.width; col++ ) {
+      for (let col = 0; col < this.width; col++) {
         floor[row].push(TILE_WALL);
       }
     }
+
     return floor;
   }
 
@@ -51,67 +52,68 @@ class DungeonEditorComponent extends React.Component {
     this.state = {
       width: 75,
       height: 75,
-      floor: this.editor.getFloor()
-    }
+      floor: this.editor.getFloor(),
+    };
   }
 
   handlerClick(col, row) {
-    var floor = this.state.floor;
-    floor[row][col] = (floor[row][col] === TILE_WALL) ? TILE_FLOOR : TILE_WALL;
-    this.setState({
-      floor: floor
-    });
+    let floor = this.state.floor;
+    floor[row][col] = (floor[row][col] === TILE_WALL)
+      ? TILE_FLOOR
+      : TILE_WALL;
+    this.setState({ floor });
   }
 
   render() {
-      var floor_tiles = [];
-      var floor_json = {
-        floor: []
-      };
-      for(var currRow = 0; currRow < this.state.height; currRow++) {
-        for(var currCol = 0; currCol < this.state.width; currCol++) {
-          floor_tiles.push(
-            <DungeonEditorTile key={`${currRow}_${currCol}`}
-              column={currCol} row={currRow}
-              tileType={this.state.floor[currRow][currCol]}
-              clickHandler={this.handlerClick.bind(this)} />
-          );
-          floor_json.floor.push({
+    let floorTiles = [];
+    let floorJson = {
+      floor: [],
+    };
+    for (let currRow = 0; currRow < this.state.height; currRow++) {
+      for (let currCol = 0; currCol < this.state.width; currCol++) {
+        floorTiles.push(
+          <DungeonEditorTile key={`${currRow}_${currCol}`}
+            column={currCol} row={currRow}
+            tileType={this.state.floor[currRow][currCol]}
+            clickHandler={this.handlerClick.bind(this)}
+          />);
+        if (this.state.floor[currRow][currCol] === TILE_FLOOR) {
+          floorJson.floor.push({
             column: currCol,
             row: currRow,
-            tileType: this.state.floor[currRow][currCol]
           });
         }
       }
-
-        return (
-          <div>
-            <svg className="dungeon"
-              width={this.state.width * 10}
-              height={this.state.height * 10} >
-              {floor_tiles}
-            </svg>
-            <div>
-              {JSON.stringify(floor_json)}
-            </div>
-          </div>
-        );
     }
-}
 
-class DungeonEditorTile extends React.Component{
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
     return (
-      <rect x={this.props.column*10} y={this.props.row*10}
-        width={10} height={10}
-        className={this.props.tileType}
-        onClick={(event)=>this.props.clickHandler(this.props.column, this.props.row)} />
+      <div>
+        <svg className="dungeon" width={this.state.width * 35}
+          height={this.state.height * 35}
+        >
+          {floorTiles}
+        </svg>
+        <div>
+          {JSON.stringify(floorJson)};
+        </div>
+      </div>
     );
   }
 }
 
-ReactDOM.render(<DungeonEditorComponent/>, app);
+class DungeonEditorTile extends React.Component {
+  render() {
+    return (
+      <rect x={this.props.column * 35}
+        y={this.props.row * 35}
+        width={35} height={35}
+        className={this.props.tileType}
+        onClick={() => {
+          this.props.clickHandler(this.props.column, this.props.row)
+        }}
+      />);
+  }
+}
+
+ReactDOM.render(
+  <DungeonEditorComponent/>, app);
